@@ -4,7 +4,6 @@ import os
 
 
 # --- Auto-refresh every 5 minutes --
-
 DATA_PATH = "../data/sales_master.csv"
 
 # --- Page Config ---

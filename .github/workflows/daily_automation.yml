@@ -2,40 +2,48 @@ name: Daily Sales Automation
 
 on:
   schedule:
-    - cron: "0 17 * * *"   # Runs daily at 6PM Nigerian time (UTC+1)
+    - cron: "10 19 * * *"   # 8:10 PM Nigeria time
   workflow_dispatch:
 
 jobs:
-  run-automation:
+  run-pipeline:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_ACTIONS: "true"
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: true
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
       - name: Install dependencies
         run: |
-          pip install pandas numpy
+          pip install pandas numpy python-dotenv
 
-      - name: Generate daily sales file
-        run: |
-          python scripts/generate_sales_data.py
+      - name: Generate daily sales
+        run: python scripts/generate_sales_data.py
 
-      - name: Combine into master dataset
-        run: |
-          python scripts/combine_daily_sales.py
+      - name: Combine daily sales files
+        run: python scripts/combine_daily_sales.py
 
-      - name: Commit and push updates
+      - name: Generate daily summary
+        run: python scripts/generate_daily_summary.py
+
+      - name: Send email summary
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
+        run: python scripts/send_daily_email.py
+
+      - name: Commit updated master dataset
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
-          git commit -m "Automated end-of-day update" || echo "No changes to commit"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add data/sales_master.csv data/daily_summary.csv
+          git commit -m "Daily sales update"
           git push

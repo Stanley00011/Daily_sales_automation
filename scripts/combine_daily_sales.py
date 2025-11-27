@@ -1,12 +1,14 @@
 import pandas as pd
 import os
+from utils import get_data_path
 
-DATA_DIR = "../data"
-MASTER_FILE = os.path.join(DATA_DIR, "sales_master.csv")
+# --- Resolve data directory ---
+data_dir = os.path.dirname(get_data_path("dummy.txt"))  # safely get /data path
+master_file = get_data_path("sales_master.csv")
 
-# --- Collect all sales_YYYY-MM-DD.csv files --- scripts/combine_daily_sales.py
+# --- Collect all sales_YYYY-MM-DD.csv files ---
 all_files = [
-    f for f in os.listdir(DATA_DIR)
+    f for f in os.listdir(data_dir)
     if f.startswith("sales_") and f.endswith(".csv")
 ]
 
@@ -15,14 +17,17 @@ if not all_files:
     exit()
 
 # --- Read and merge ---
-df_list = [pd.read_csv(os.path.join(DATA_DIR, f)) for f in all_files]
+df_list = [pd.read_csv(os.path.join(data_dir, f)) for f in all_files]
 combined_df = pd.concat(df_list, ignore_index=True)
 
 # --- Sort by Date ---
 combined_df["Date"] = pd.to_datetime(combined_df["Date"])
 combined_df = combined_df.sort_values("Date")
 
-# --- Save master file ---
-combined_df.to_csv(MASTER_FILE, index=False)
-print(f"Combined {len(all_files)} daily files into {MASTER_FILE}")
-print(f"Total records: {len(combined_df)}")
+# --- Save master file (skip in Streamlit Cloud) ---
+if os.environ.get("STREAMLIT_CLOUD") == "1":
+    print("Streamlit Cloud detected — skipping master CSV write.")
+else:
+    combined_df.to_csv(master_file, index=False)
+    print(f"Combined {len(all_files)} daily files into {master_file}")
+    print(f"Total records: {len(combined_df)}")

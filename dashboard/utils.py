@@ -20,4 +20,4 @@ def get_data_path(filename="sales_master.csv"):
         return os.path.join("data", filename)
 
     # Local run
-    return os.path.join("../data", filename)
+    # return os.path.join("../data", filename)

@@ -14,7 +14,7 @@ def get_data_path(filename="sales_master.csv"):
             f"https://raw.githubusercontent.com/"
             f"Stanley00011/Daily_sales_automation/blob/main/data/sales_master.csv" 
         )
-
+    
     # GitHub Actions
     if os.environ.get("GITHUB_ACTIONS") == "true":
         return os.path.join("data", filename)

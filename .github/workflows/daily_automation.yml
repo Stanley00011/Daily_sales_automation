@@ -2,7 +2,7 @@ name: Daily Sales Automation
 
 on:
   schedule:
-    - cron: "10 19 * * *"   # 8:10 PM Nigeria time
+    - cron: "0 18 * * *"   # Runs daily at 6 PM UTC
   workflow_dispatch:
 
 jobs:

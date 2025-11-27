@@ -10,10 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_ACTIONS: "true"
+    
+    # ADDED: Grants permission for git push
+    permissions:
+      contents: write 
+    # ADDED: Grants permission for git push
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      # ... (Rest of the setup and install steps are the same) ...
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -44,6 +51,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
+          # Use || true after commit in case the file hasn't changed, preventing job failure.
           git add data/sales_master.csv data/daily_summary.csv
-          git commit -m "Daily sales update"
+          git commit -m "Daily sales update" || true
           git push

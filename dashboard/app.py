@@ -12,8 +12,8 @@ if time.time() - last_refresh > REFRESH_INTERVAL:
     st.session_state["last_refresh"] = time.time()
     st.experimental_rerun()
 
-
-DATA_PATH = "../data/sales_master.csv"
+DATA_URL = "https://raw.githubusercontent.com/Stanley00011/Daily_sales_automation/main/data/sales_master.csv"
+df = pd.read_csv(DATA_URL)
 
 # --- Page Config ---
 st.set_page_config(page_title="Daily Sales Dashboard", layout="wide")
@@ -22,10 +22,10 @@ st.title("Daily Sales Performance Dashboard")
 st.markdown("This dashboard updates automatically when new sales data arrives.")
 
 # --- Load Data ---
-if not os.path.exists(DATA_PATH):
+if not os.path.exists(DATA_URL):
     st.warning(" No sales data found. Run your data scripts first.")
 else:
-    df = pd.read_csv(DATA_PATH)
+    df = pd.read_csv(DATA_URL)
     df["Date"] = pd.to_datetime(df["Date"])
 
     # --- Metrics ---

@@ -12,7 +12,7 @@ def get_data_path(filename="sales_master.csv"):
     if os.environ.get("STREAMLIT_CLOUD") == "1":
         return (
             f"https://raw.githubusercontent.com/"
-            f"Stanley00011/Daily_sales_automation/main/data/{filename}"
+            f"Stanley00011/Daily_sales_automation/blob/main/data/sales_master.csv"
         )
 
     # GitHub Actions

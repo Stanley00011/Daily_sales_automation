@@ -1,9 +1,18 @@
 import streamlit as st
+import time
 import pandas as pd
 import os
 
+# --- Auto-refresh every 5 minutes ---
 
-# --- Auto-refresh every 5 minutes --
+REFRESH_INTERVAL = 5 * 60  # seconds
+last_refresh = st.session_state.get("last_refresh", time.time())
+
+if time.time() - last_refresh > REFRESH_INTERVAL:
+    st.session_state["last_refresh"] = time.time()
+    st.experimental_rerun()
+
+
 DATA_PATH = "../data/sales_master.csv"
 
 # --- Page Config ---

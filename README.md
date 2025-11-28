@@ -2,7 +2,7 @@
 
 An end-to-end **automated data pipeline** that simulates daily sales, consolidates data, generates insights, sends automated email reports, and powers a live auto-refreshing dashboard.
 
-This project shows how a Data Analyst can merge **automation + analytics + lightweight engineering** to deliver consistent value—hands-free.
+This project shows how a Data Analyst can merge **automation + analytics + lightweight engineering** to deliver consistent value hands-free.
 
 ---
 

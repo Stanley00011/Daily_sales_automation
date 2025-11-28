@@ -15,7 +15,9 @@ To demonstrate how a modern Data Analyst can:
 * Build pipeline-style systems with Python
 * Combine analytics with automation tools
 
-This project works **fully offline**, uses simulated data, and can run **locally** or be extended to the cloud.
+
+**Live Dashboard:** https://salesdaily.streamlit.app/  
+**Daily Automation:** Powered by GitHub Actions
 
 ---
 
@@ -30,16 +32,34 @@ This project works **fully offline**, uses simulated data, and can run **locally
 
 ---
 
-## older Structure
+## Structure
 
-```
+```bash
 daily_sales_automation/
 │
-├── data/          # stores daily CSV files + master dataset
-├── scripts/       # Python automation scripts
-├── dashboard/     # Streamlit dashboard
-└── README.md
+├── data/                       # Daily CSVs, master dataset, summaries
+├── scripts/                    # Automation + processing scripts
+├── dashboard/                  # Streamlit dashboard app
+└── .github/workflows/          # GitHub Actions automation
+
 ```
+
+---
+
+## Cloud Automation: GitHub Actions
+
+Daily automation is handled by:
+
+.github/workflows/daily_automation.yml
+
+
+* The workflow:
+* Runs the pipeline scripts
+* Generates fresh data
+* Updates the master dataset
+* Produces KPI summary
+* Commits updated CSV files back to the repo
+* This makes the entire system hands-free.
 
 ---
 
